@@ -21,6 +21,7 @@ func Mount(bucket, mountPoint string) (mfs *fuse.MountedFileSystem, err error) {
 		FileMode:     os.FileMode(600),
 		Uid:          uint32(99),
 		Gid:          uint32(99),
+		StorageClass: "STANDARD",
 		StatCacheTTL: dur,
 		TypeCacheTTL: dur,
 		DebugFuse:    true,

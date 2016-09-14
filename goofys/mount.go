@@ -24,8 +24,8 @@ func Mount(bucket, mountPoint string) (mfs *fuse.MountedFileSystem, err error) {
 		StorageClass: "STANDARD",
 		StatCacheTTL: dur,
 		TypeCacheTTL: dur,
-		DebugFuse:    true,
-		DebugS3:      true,
+		DebugFuse:    false,
+		DebugS3:      false,
 		Foreground:   false,
 	}
 

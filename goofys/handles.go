@@ -255,9 +255,10 @@ func (parent *Inode) MkDir(
 	fullName := parent.getChildName(name)
 
 	params := &s3.PutObjectInput{
-		Bucket: &fs.bucket,
-		Key:    fs.key(fullName + "/"),
-		Body:   nil,
+		Bucket:               &fs.bucket,
+		Key:                  fs.key(fullName + "/"),
+		Body:                 nil,
+		ServerSideEncryption: aws.String("AES256"),
 	}
 	_, err = fs.s3.PutObject(params)
 	if err != nil {
@@ -361,10 +362,11 @@ func (fh *FileHandle) initMPU(fs *Goofys) {
 	}()
 
 	params := &s3.CreateMultipartUploadInput{
-		Bucket:       &fs.bucket,
-		Key:          fs.key(*fh.inode.FullName),
-		StorageClass: &fs.flags.StorageClass,
-		ContentType:  fs.getMimeType(*fh.inode.FullName),
+		Bucket:               &fs.bucket,
+		Key:                  fs.key(*fh.inode.FullName),
+		StorageClass:         &fs.flags.StorageClass,
+		ContentType:          fs.getMimeType(*fh.inode.FullName),
+		ServerSideEncryption: aws.String("AES256"),
 	}
 
 	resp, err := fs.s3.CreateMultipartUpload(params)
@@ -848,11 +850,12 @@ func (fh *FileHandle) flushSmallFile(fs *Goofys) (err error) {
 	defer buf.Free()
 
 	params := &s3.PutObjectInput{
-		Bucket:       &fs.bucket,
-		Key:          fs.key(*fh.inode.FullName),
-		Body:         buf,
-		StorageClass: &fs.flags.StorageClass,
-		ContentType:  fs.getMimeType(*fh.inode.FullName),
+		Bucket:               &fs.bucket,
+		Key:                  fs.key(*fh.inode.FullName),
+		Body:                 buf,
+		StorageClass:         &fs.flags.StorageClass,
+		ContentType:          fs.getMimeType(*fh.inode.FullName),
+		ServerSideEncryption: aws.String("AES256"),
 	}
 
 	fs.replicators.Take(1, true)

@@ -458,10 +458,11 @@ func (fs *Goofys) copyObjectMultipart(size int64, from string, to string, mpuId 
 
 	if mpuId == "" {
 		params := &s3.CreateMultipartUploadInput{
-			Bucket:       &fs.bucket,
-			Key:          fs.key(to),
-			StorageClass: &fs.flags.StorageClass,
-			ContentType:  fs.getMimeType(to),
+			Bucket:               &fs.bucket,
+			Key:                  fs.key(to),
+			StorageClass:         &fs.flags.StorageClass,
+			ContentType:          fs.getMimeType(to),
+			ServerSideEncryption: aws.String("AES256"),
 		}
 
 		resp, err := fs.s3.CreateMultipartUpload(params)

@@ -17,15 +17,15 @@ func Mount(bucket, mountPoint string) (mfs *fuse.MountedFileSystem, err error) {
 	dur, _ := time.ParseDuration("1m")
 	flags := &FlagStorage{
 		MountOptions: make(map[string]string),
-		DirMode:      os.FileMode(600),
-		FileMode:     os.FileMode(600),
+		DirMode:      os.FileMode(0700),
+		FileMode:     os.FileMode(0600),
 		Uid:          uint32(99),
 		Gid:          uint32(99),
 		StorageClass: "STANDARD",
 		StatCacheTTL: dur,
 		TypeCacheTTL: dur,
 		DebugFuse:    false,
-		DebugS3:      false,
+		DebugS3:      true,
 		Foreground:   false,
 	}
 
